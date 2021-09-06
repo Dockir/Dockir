@@ -1,0 +1,59 @@
+{
+ "properties": {
+  "displayName": "Deny-MachineLearning-PublicAccessWhenBehindVnet",
+  "policyType": "Custom",
+  "mode": "Indexed",
+  "description": "Deny public access behind vnet for machine learning workspaces.",
+  "metadata": {
+   "version": "1.0.0",
+   "category": "Machine Learning",
+   "createdBy": "03467568-1f95-464a-b586-7a402f635225",
+   "createdOn": "2021-08-24T23:50:22.1357184Z",
+   "updatedBy": null,
+   "updatedOn": null
+  },
+  "parameters": {
+   "effect": {
+    "type": "String",
+    "metadata": {
+     "displayName": "Effect",
+     "description": "Enable or disable the execution of the policy"
+    },
+    "allowedValues": [
+     "Audit",
+     "Disabled",
+     "Deny"
+    ],
+    "defaultValue": "Deny"
+   }
+  },
+  "policyRule": {
+   "if": {
+    "allOf": [
+     {
+      "field": "type",
+      "equals": "Microsoft.MachineLearningServices/workspaces"
+     },
+     {
+      "anyOf": [
+       {
+        "field": "Microsoft.MachineLearningServices/workspaces/allowPublicAccessWhenBehindVnet",
+        "exists": false
+       },
+       {
+        "field": "Microsoft.MachineLearningServices/workspaces/allowPublicAccessWhenBehindVnet",
+        "notEquals": false
+       }
+      ]
+     }
+    ]
+   },
+   "then": {
+    "effect": "[parameters('effect')]"
+   }
+  }
+ },
+ "id": "/providers/Microsoft.Management/managementGroups/RMGlobal/providers/Microsoft.Authorization/policyDefinitions/Deny-MachineLearning-PublicAccessWhenBehindVnet",
+ "type": "Microsoft.Authorization/policyDefinitions",
+ "name": "Deny-MachineLearning-PublicAccessWhenBehindVnet"
+}

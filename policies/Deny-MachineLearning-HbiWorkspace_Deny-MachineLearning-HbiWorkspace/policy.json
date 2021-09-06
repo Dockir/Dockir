@@ -1,0 +1,59 @@
+{
+ "properties": {
+  "displayName": "Deny-MachineLearning-HbiWorkspace",
+  "policyType": "Custom",
+  "mode": "Indexed",
+  "description": "Enforce high business impact machine learning workspaces across the environment.",
+  "metadata": {
+   "version": "1.0.0",
+   "category": "Machine Learning",
+   "createdBy": "03467568-1f95-464a-b586-7a402f635225",
+   "createdOn": "2021-08-24T23:50:22.0653521Z",
+   "updatedBy": null,
+   "updatedOn": null
+  },
+  "parameters": {
+   "effect": {
+    "type": "String",
+    "metadata": {
+     "displayName": "Effect",
+     "description": "Enable or disable the execution of the policy"
+    },
+    "allowedValues": [
+     "Audit",
+     "Disabled",
+     "Deny"
+    ],
+    "defaultValue": "Deny"
+   }
+  },
+  "policyRule": {
+   "if": {
+    "allOf": [
+     {
+      "field": "type",
+      "equals": "Microsoft.MachineLearningServices/workspaces"
+     },
+     {
+      "anyOf": [
+       {
+        "field": "Microsoft.MachineLearningServices/workspaces/hbiWorkspace",
+        "exists": false
+       },
+       {
+        "field": "Microsoft.MachineLearningServices/workspaces/hbiWorkspace",
+        "notEquals": true
+       }
+      ]
+     }
+    ]
+   },
+   "then": {
+    "effect": "[parameters('effect')]"
+   }
+  }
+ },
+ "id": "/providers/Microsoft.Management/managementGroups/RMGlobal/providers/Microsoft.Authorization/policyDefinitions/Deny-MachineLearning-HbiWorkspace",
+ "type": "Microsoft.Authorization/policyDefinitions",
+ "name": "Deny-MachineLearning-HbiWorkspace"
+}
